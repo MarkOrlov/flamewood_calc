@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@flamewood_candles calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: space-between;
+            align-items: center;
+            color: #333;
+        }
+        header {
+            background-color: #fff;
+            padding: 20px;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px 0;
+        }
+        .card {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .card h3 {
+            margin-bottom: 15px;
+        }
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .input-group input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .columns {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .column {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .column label {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        .column input[type="number"] {
+            width: 100%;
+        }
+        .result-group {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .result-item {
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #6b46c1;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #553a9d;
+        }
+        footer {
+            background-color: #fff;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        @media (min-width: 600px) {
+            .column {
+                width: 48%;
+                margin-right: 4%;
+            }
+            .column:nth-child(2n) {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        @flamewood_candles calculator
+    </header>
+    <div class="container">
+        <div class="card">
+            <h3>Расчет Отдушки и Базы</h3>
+            <div class="input-group">
+                <label for="relation">Отношение, %:</label>
+                <input type="number" id="relation" step="any" placeholder="Введите отношение в %" oninput="calculate()">
+            </div>
+            <div class="input-group">
+                <label for="totalVolume">Общий объем, г:</label>
+                <input type="number" id="totalVolume" step="any" placeholder="Введите общий объем в г" oninput="calculate()">
+            </div>
+            <div class="result-group">
+                <p>Отдушка, г: <span id="perfume">0</span></p>
+                <p>База, г: <span id="base">0</span></p>
+            </div>
+        </div>
+        <div class="card">
+            <h3>Расчет себестоимости</h3>
+            <div class="columns">
+                <div class="column">
+                    <div class="input-group">
+                        <label for="tariff">Тара, руб:</label>
+                        <input type="number" id="tariff" step="any" placeholder="Введите сумму" oninput="calculateCost()">
+                    </div>
+                    <div class="input-group">
+                        <label for="perfumeCost">Отдушка, руб:</label>
+                        <input type="number" id="perfumeCost" step="any" placeholder="Введите сумму" oninput="calculateCost()">
+                    </div>
+                    <div class="input-group">
+                        <label for="baseCost">База, руб:</label>
+                        <input type="number" id="baseCost" step="any" placeholder="Введите сумму" oninput="calculateCost()">
+                    </div>
+                    <div class="input-group">
+                        <label for="packagingCost">Упаковка, руб:</label>
+                        <input type="number" id="packagingCost" step="any" placeholder="Введите сумму" oninput="calculateCost()">
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="input-group">
+                        <label for="tariffQty">Шт:</label>
+                        <input type="number" id="tariffQty" step="any" value="1" placeholder="Введите количество" oninput="calculateCost()">
+                    </div>
+                    <div class="input-group">
+                        <label for="perfumeWeight">Грамм:</label>
+                        <input type="number" id="perfumeWeight" step="any" value="1" placeholder="Введите вес" oninput="calculateCost()">
+                    </div>
+                    <div class="input-group">
+                        <label for="baseWeight">Грамм:</label>
+                        <input type="number" id="baseWeight" step="any" value="1" placeholder="Введите вес" oninput="calculateCost()">
+                    </div>
+                    <div class="input-group">
+                        <label for="packagingQty">Шт:</label>
+                        <input type="number" id="packagingQty" step="any" value="1" placeholder="Введите количество" oninput="calculateCost()">
+                    </div>
+                </div>
+            </div>
+            <div class="result-group">
+                <div class="result-item">Тара, руб: <span id="tariffResult">0</span></div>
+                <div class="result-item">Отдушка, руб: <span id="perfumeCostResult">0</span></div>
+                <div class="result-item">База, руб: <span id="baseCostResult">0</span></div>
+                <div class="result-item">Упаковка, руб: <span id="packagingCostResult">0</span></div>
+                <hr>
+                <div class="result-item">Себестоимость: <span id="totalCost">0</span> руб</div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        Created by Mark Orlov © <span id="currentYear"></span>
+    </footer>
+
+    <script>
+        function calculate() {
+            const relation = parseFloat(document.getElementById('relation').value) || 0;
+            const totalVolume = parseFloat(document.getElementById('totalVolume').value) || 0;
+
+            if (isNaN(relation) || isNaN(totalVolume)) {
+                document.getElementById('perfume').textContent = '0';
+                document.getElementById('base').textContent = '0';
+                return;
+            }
+
+            const perfume = (relation / (100 + relation)) * totalVolume;
+            const base = totalVolume - perfume;
+
+            document.getElementById('perfume').textContent = perfume.toFixed(2);
+            document.getElementById('base').textContent = base.toFixed(2);
+
+            // Пересчитываем себестоимость после изменения отдушка и базы
+            calculateCost();
+        }
+
+        function calculateCost() {
+            const perfume = parseFloat(document.getElementById('perfume').textContent) || 0;
+            const base = parseFloat(document.getElementById('base').textContent) || 0;
+
+            const tariff = parseFloat(document.getElementById('tariff').value) || 0;
+            const tariffQty = parseFloat(document.getElementById('tariffQty').value) || 0;
+
+            const perfumeCost = parseFloat(document.getElementById('perfumeCost').value) || 0;
+            const perfumeWeight = parseFloat(document.getElementById('perfumeWeight').value) || 0;
+
+            const baseCost = parseFloat(document.getElementById('baseCost').value) || 0;
+            const baseWeight = parseFloat(document.getElementById('baseWeight').value) || 0;
+
+            const packagingCost = parseFloat(document.getElementById('packagingCost').value) || 0;
+            const packagingQty = parseFloat(document.getElementById('packagingQty').value) || 0;
+
+            if (isNaN(tariff) || isNaN(tariffQty) || isNaN(perfumeCost) || isNaN(perfumeWeight) || isNaN(baseCost) || isNaN(baseWeight) || isNaN(packagingCost) || isNaN(packagingQty)) {
+                document.getElementById('totalCost').textContent = '0';
+                document.getElementById('tariffResult').textContent = '0';
+                document.getElementById('perfumeCostResult').textContent = '0';
+                document.getElementById('baseCostResult').textContent = '0';
+                document.getElementById('packagingCostResult').textContent = '0';
+                return;
+            }
+
+            const totalTariffCost = tariff / tariffQty;
+            const totalPerfumeCost = (perfumeCost / perfumeWeight) * perfume;
+            const totalBaseCost = (baseCost / baseWeight) * base;
+            const totalPackagingCost = packagingCost / packagingQty;
+
+            const totalCost = totalTariffCost + totalPerfumeCost + totalBaseCost + totalPackagingCost;
+
+            document.getElementById('totalCost').textContent = totalCost.toFixed(2);
+            document.getElementById('tariffResult').textContent = totalTariffCost.toFixed(2);
+            document.getElementById('perfumeCostResult').textContent = totalPerfumeCost.toFixed(2);
+            document.getElementById('baseCostResult').textContent = totalBaseCost.toFixed(2);
+            document.getElementById('packagingCostResult').textContent = totalPackagingCost.toFixed(2);
+        }
+
+        // Устанавливаем текущий год в футере
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
